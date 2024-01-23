@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reMorse</title>
+    <style>
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #4CAF50;
+        }
+
+        button.dash {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="playMorseSymbol('.')">Play Dot</button>
+    <button class="dash" onclick="playMorseSymbol('-')">Play Dash</button>
+
+    <script>
+        const beepDuration = 150;
+        const dotFrequency = 1000;
+        const dashFrequency = 1000;
+
+        let audioContext;
+
+        function initializeAudioContext() {
+            audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playBeep(duration, frequency) {
+            const oscillator = audioContext.createOscillator();
+            oscillator.type = "sine";
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.connect(audioContext.destination);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + (duration / 1000));
+        }
+
+        function playMorseSymbol(symbol) {
+            initializeAudioContext();
+
+            if (symbol === '.') {
+                playBeep(beepDuration, dotFrequency);
+            } else if (symbol === '-') {
+                playBeep(beepDuration * 2, dashFrequency);
+            }
+        }
+    </script>
+</body>
+</html>
